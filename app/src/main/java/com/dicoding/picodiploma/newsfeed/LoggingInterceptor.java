@@ -3,6 +3,7 @@ package com.dicoding.picodiploma.newsfeed;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -15,7 +16,7 @@ import okio.Buffer;
  * @author Floriv
  */
 
-public class LoggingInterceptor implements Interceptor {
+class LoggingInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -30,8 +31,9 @@ public class LoggingInterceptor implements Interceptor {
         Response response = chain.proceed(request);
         long t2 = System.nanoTime();
 
-        String responseLog = String.format("Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d, response.headers());
+        String responseLog = String.format(Locale.ENGLISH,"Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d, response.headers());
 
+        assert response.body() != null;
         String bodyString = response.body().string();
 
         Log.d("TAG", "response" + "\n" + responseLog + "\n" + bodyString);
@@ -41,10 +43,11 @@ public class LoggingInterceptor implements Interceptor {
                 .build();
     }
 
-    public static String bodyToString(final Request request) {
+    private static String bodyToString(final Request request) {
         try {
             final Request copy = request.newBuilder().build();
             final Buffer buffer = new Buffer();
+            assert copy.body() != null;
             copy.body().writeTo(buffer);
             return buffer.readUtf8();
         } catch (final IOException e) {

@@ -1,6 +1,5 @@
 package com.dicoding.picodiploma.newsfeed;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +14,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CvNewsAdapter extends RecyclerView.Adapter<CvNewsAdapter.CvHolder> {
-    private Context context;
     private ArrayList<News>listNews;
 
-    public CvNewsAdapter(Context context) {
-        this.context = context;
+    CvNewsAdapter() {
+
     }
 
-    public ArrayList<News> getListNews() {
+    private ArrayList<News> getListNews() {
         return listNews;
     }
 
-    public void setListNews(ArrayList<News> listNews) {
+    void setListNews(ArrayList<News> listNews) {
         this.listNews = listNews;
     }
 
@@ -41,7 +39,7 @@ public class CvNewsAdapter extends RecyclerView.Adapter<CvNewsAdapter.CvHolder> 
     public void onBindViewHolder(@NonNull CvNewsAdapter.CvHolder holder, int position) {
         News news = getListNews().get(position);
         holder.tvTitle.setText(news.getTitle());
-        holder.tvDate.setText(news.getPublishedAt());
+        holder.tvDate.setText(news.getPublishedAt().substring(0,10));
         Picasso.get().load(news.getUrlToImage()).resize(120,60).into(holder.imNews);
     }
 
@@ -50,10 +48,10 @@ public class CvNewsAdapter extends RecyclerView.Adapter<CvNewsAdapter.CvHolder> 
         return listNews.size();
     }
 
-    public class CvHolder extends RecyclerView.ViewHolder {
+    class CvHolder extends RecyclerView.ViewHolder {
         ImageView imNews;
         TextView tvTitle, tvDate;
-        public CvHolder(@NonNull View itemView) {
+        CvHolder(@NonNull View itemView) {
             super(itemView);
             imNews = itemView.findViewById(R.id.image_news);
             tvTitle = itemView.findViewById(R.id.tv_title);

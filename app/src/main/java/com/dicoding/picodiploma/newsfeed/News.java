@@ -89,7 +89,7 @@ public class News implements Parcelable {
     public News() {
     }
 
-    protected News(Parcel in) {
+    private News(Parcel in) {
         this.author = in.readString();
         this.title = in.readString();
         this.description = in.readString();

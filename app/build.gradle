@@ -11,17 +11,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        debug{
-            buildConfigField("String","API_KEY",'"4392ea358cb74b4dbab18002b2501677"')
-            buildConfigField("String","NEWS_URL",'"https://newsapi.org/v1/"')
-            buildConfigField("String","API_PARAM",'"apiKey"')
-            buildConfigField("String","SOURCE_PARAM",'"source"')
+        debug {
+            buildConfigField("String", "API_KEY", '"4392ea358cb74b4dbab18002b2501677"')
+            buildConfigField("String", "NEWS_URL", '"https://newsapi.org/v1/"')
+            buildConfigField("String", "API_PARAM", '"apiKey"')
+            buildConfigField("String", "SOURCE_PARAM", '"source"')
         }
         release {
-            buildConfigField("String","API_KEY",'"4392ea358cb74b4dbab18002b2501677"')
-            buildConfigField("String","NEWS_URL",'"https://newsapi.org/v1/"')
-            buildConfigField("String","API_PARAM",'"apiKey"')
-            buildConfigField("String","SOURCE_PARAM",'"source"')
+            buildConfigField("String", "API_KEY", '"4392ea358cb74b4dbab18002b2501677"')
+            buildConfigField("String", "NEWS_URL", '"https://newsapi.org/v1/"')
+            buildConfigField("String", "API_PARAM", '"apiKey"')
+            buildConfigField("String", "SOURCE_PARAM", '"source"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

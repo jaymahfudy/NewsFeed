@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ListNews {
+class ListNews {
     @SerializedName("articles")
     private List<News> listNews;
 
@@ -12,7 +12,7 @@ public class ListNews {
         this.listNews = listNews;
     }
 
-    public List<News> getListNews() {
+    List<News> getListNews() {
         return listNews;
     }
 

@@ -8,13 +8,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView rvNews;
+    private RecyclerView rvNews;
     private ArrayList<News> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         rvNews.setHasFixedSize(true);
         list = new ArrayList<>();
         fetchData("the-verge");
-        showRecyclerView();
     }
 
     @Override
@@ -34,21 +35,28 @@ public class MainActivity extends AppCompatActivity {
 
     private void showRecyclerView(){
         rvNews.setLayoutManager(new LinearLayoutManager(this));
-        CvNewsAdapter cvNewsAdapter = new CvNewsAdapter(this);
+        CvNewsAdapter cvNewsAdapter = new CvNewsAdapter();
         cvNewsAdapter.setListNews(list);
         rvNews.setAdapter(cvNewsAdapter);
+        ItemClickSupport.addTo(rvNews).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent i = new Intent(getApplicationContext(), DisplayNewsActivity.class);
+                i.putExtra("NEWS_URL",list.get(position).getUrl());
+                startActivity(i);
+            }
+        });
     }
 
     private void fetchData(String source){
         NewsService service = RetrofitClient.getClient().create(NewsService.class);
-        Call<ListNews> listNews = service.listNews(source, BuildConfig.API_KEY);
+        final Call<ListNews> listNews = service.listNews(source, BuildConfig.API_KEY);
         listNews.enqueue(new Callback<ListNews>() {
             @Override
             public void onResponse(Call<ListNews> call, Response<ListNews> response) {
                 Log.v("INI",response.toString());
-                if (response.body() != null) {
+                if (response.body() != null)
                     list.addAll(response.body().getListNews());
-                }
                 showRecyclerView();
             }
 
