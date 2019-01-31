@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.newsfeed;
+package com.dicoding.picodiploma.newsfeed.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -20,55 +20,27 @@ public class News implements Parcelable {
     private String publishedAt;
 
     public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
+        return author==null?"":author;
     }
 
     public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+        return title==null?"":title;
     }
 
     public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        return description==null?"":description;
     }
 
     public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+        return url==null?"":url;
     }
 
     public String getUrlToImage() {
-        return urlToImage;
-    }
-
-    public void setUrlToImage(String urlToImage) {
-        this.urlToImage = urlToImage;
+        return urlToImage==null?"http://www.example.com/":urlToImage;
     }
 
     public String getPublishedAt() {
-        return publishedAt;
-    }
-
-    public void setPublishedAt(String publishedAt) {
-        this.publishedAt = publishedAt;
-    }
-
-    public static Creator<News> getCREATOR() {
-        return CREATOR;
+        return publishedAt==null?"":publishedAt.substring(0,10);
     }
 
     @Override
@@ -84,9 +56,6 @@ public class News implements Parcelable {
         dest.writeString(this.url);
         dest.writeString(this.urlToImage);
         dest.writeString(this.publishedAt);
-    }
-
-    public News() {
     }
 
     private News(Parcel in) {

@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.newsfeed;
+package com.dicoding.picodiploma.newsfeed.retrofit;
 
 import android.util.Log;
 
@@ -16,7 +16,7 @@ import okio.Buffer;
  * @author Floriv
  */
 
-class LoggingInterceptor implements Interceptor {
+public class LoggingInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {

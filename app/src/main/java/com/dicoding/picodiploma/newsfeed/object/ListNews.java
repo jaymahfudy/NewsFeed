@@ -1,10 +1,10 @@
-package com.dicoding.picodiploma.newsfeed;
+package com.dicoding.picodiploma.newsfeed.object;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-class ListNews {
+public class ListNews {
     @SerializedName("articles")
     private List<News> listNews;
 
@@ -12,11 +12,7 @@ class ListNews {
         this.listNews = listNews;
     }
 
-    List<News> getListNews() {
+    public List<News> getListNews() {
         return listNews;
-    }
-
-    public void setListNews(List<News> listNews) {
-        this.listNews = listNews;
     }
 }

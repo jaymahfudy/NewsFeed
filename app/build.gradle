@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -14,17 +13,18 @@ android {
         debug {
             buildConfigField("String", "API_KEY", '"4392ea358cb74b4dbab18002b2501677"')
             buildConfigField("String", "NEWS_URL", '"https://newsapi.org/v1/"')
-            buildConfigField("String", "API_PARAM", '"apiKey"')
             buildConfigField("String", "SOURCE_PARAM", '"source"')
         }
         release {
             buildConfigField("String", "API_KEY", '"4392ea358cb74b4dbab18002b2501677"')
             buildConfigField("String", "NEWS_URL", '"https://newsapi.org/v1/"')
-            buildConfigField("String", "API_PARAM", '"apiKey"')
             buildConfigField("String", "SOURCE_PARAM", '"source"')
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    dataBinding {
+        enabled = true
     }
 }
 
@@ -37,6 +37,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
