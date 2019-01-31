@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.newsfeed.adapter;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dicoding.picodiploma.newsfeed.R;
-import com.dicoding.picodiploma.newsfeed.object.News;
+import com.dicoding.picodiploma.newsfeed.model.News;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -40,8 +41,8 @@ public class RvNewsAdapter extends RecyclerView.Adapter<RvNewsAdapter.RvHolder> 
     @Override
     public void onBindViewHolder(@NonNull RvHolder holder, int position) {
         News news = getListNews().get(position);
-        holder.tvTitle.setText(news.getTitle());
-        holder.tvDate.setText(news.getPublishedAt());
+        holder.tvTitle.setText(Html.fromHtml(news.getTitle()));
+        holder.tvDate.setText(Html.fromHtml(news.getPublishedAt()));
         if (!news.getUrlToImage().isEmpty()){
             Picasso.get().load(news.getUrlToImage()).placeholder(R.drawable.ic_image).resize(120,60).into(holder.imNews);
         } else {

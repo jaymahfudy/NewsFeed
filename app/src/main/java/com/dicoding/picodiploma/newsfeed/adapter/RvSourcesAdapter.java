@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dicoding.picodiploma.newsfeed.R;
-import com.dicoding.picodiploma.newsfeed.object.Sources;
+import com.dicoding.picodiploma.newsfeed.model.Sources;
 
 import java.util.ArrayList;
 
@@ -49,7 +49,7 @@ public class RvSourcesAdapter extends RecyclerView.Adapter<RvSourcesAdapter.RvHo
 
     public class RvHolder extends RecyclerView.ViewHolder {
         TextView tvName, tvDesc;
-        public RvHolder(@NonNull View itemView) {
+        RvHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tv_name);
             tvDesc = itemView.findViewById(R.id.tv_description);

@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.newsfeed.object;
+package com.dicoding.picodiploma.newsfeed.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -36,7 +36,7 @@ public class News implements Parcelable {
     }
 
     public String getUrlToImage() {
-        return urlToImage==null?"http://www.example.com/":urlToImage;
+        return urlToImage==null?"":urlToImage;
     }
 
     public String getPublishedAt() {

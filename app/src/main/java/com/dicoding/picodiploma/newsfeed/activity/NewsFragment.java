@@ -1,6 +1,5 @@
 package com.dicoding.picodiploma.newsfeed.activity;
 
-import android.net.rtp.RtpStream;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -9,20 +8,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.dicoding.picodiploma.newsfeed.BuildConfig;
-import com.dicoding.picodiploma.newsfeed.ItemClickSupport;
 import com.dicoding.picodiploma.newsfeed.R;
 import com.dicoding.picodiploma.newsfeed.adapter.RvNewsAdapter;
-import com.dicoding.picodiploma.newsfeed.object.ListNews;
-import com.dicoding.picodiploma.newsfeed.object.News;
-import com.dicoding.picodiploma.newsfeed.retrofit.NewsService;
-import com.dicoding.picodiploma.newsfeed.retrofit.RetrofitClient;
+import com.dicoding.picodiploma.newsfeed.model.News;
+import com.dicoding.picodiploma.newsfeed.presenter.NewsPresenter;
+import com.dicoding.picodiploma.newsfeed.util.ItemClickSupport;
+import com.dicoding.picodiploma.newsfeed.util.ViewUtil;
+import com.dicoding.picodiploma.newsfeed.view.NewsView;
 
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
@@ -32,17 +27,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements NewsView {
     private RecyclerView rvNews;
     private ProgressBar pbNews;
-    private ArrayList<News> listData = new ArrayList<>();
-    private ArrayList<News> searchRes = new ArrayList<>();
     private RvNewsAdapter rvNewsAdapter = new RvNewsAdapter();
-
+    private final NewsPresenter newsPresenter = new NewsPresenter(this);
     static final String TAG_NEWS_URL = "NEWS_URL";
 
     public NewsFragment() {
@@ -52,17 +42,18 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        ViewUtil.showBackButton(getContext());
         View view = inflater.inflate(R.layout.fragment_news, container, false);
         pbNews = view.findViewById(R.id.pb_news);
         rvNews = view.findViewById(R.id.rv_news);
         rvNews.setHasFixedSize(true);
         String sourcesId = null;
         if (getArguments() != null) { sourcesId = getArguments().getString(SourcesFragment.NEWS_SOURCES_ID); }
-        fetchData(sourcesId);
+        newsPresenter.fetchData(sourcesId);
         return  view;
     }
 
-    private void showRvNews(){
+    private void showRvNews(final ArrayList<News> listData){
         rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
         rvNewsAdapter.setListNews(listData);
         rvNews.setAdapter(rvNewsAdapter);
@@ -85,40 +76,6 @@ public class NewsFragment extends Fragment {
         });
     }
 
-    private void fetchData(String source){
-        listData = new ArrayList<>();
-        NewsService service = RetrofitClient.getClient().create(NewsService.class);
-        final Call<ListNews> listNews = service.listNews(source, BuildConfig.API_KEY);
-        listNews.enqueue(new Callback<ListNews>() {
-            @Override
-            public void onResponse(@NonNull Call<ListNews> call,@NonNull Response<ListNews> response) {
-                if (response.body() != null) { listData.addAll(response.body().getListNews());}
-                showRvNews();
-                setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<ListNews> call,@NonNull Throwable t) {
-                setVisibility(View.VISIBLE);
-                showToast(R.string.check_ur_connection);
-            }
-        });
-    }
-
-    private void searchData(String title){
-        Pattern pattern = Pattern.compile(title);
-        Matcher matcher;
-        searchRes.clear();
-        for (News news:listData){
-            matcher = pattern.matcher(news.getTitle());
-            if (matcher.find()){
-                searchRes.add(news);
-            }
-        }
-        rvNewsAdapter.setListNews(searchRes);
-        rvNewsAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -129,7 +86,7 @@ public class NewsFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(!query.isEmpty()){
-                    searchData(query);
+                    newsPresenter.searchData(query);
                 }
                 return false;
             }
@@ -141,12 +98,21 @@ public class NewsFragment extends Fragment {
         });
     }
 
-    private void setVisibility(int rvVisibility){
-        pbNews.setVisibility(View.GONE);
-        rvNews.setVisibility(rvVisibility);
+    @Override
+    public void getDataSuccess(ArrayList<News> listData) {
+        showRvNews(listData);
+        ViewUtil.setVisibility(pbNews, rvNews);
     }
 
-    private void showToast(int resId){
-        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
+    @Override
+    public void getDataFailure() {
+        ViewUtil.setVisibility(pbNews,rvNews);
+        ViewUtil.showToast(getContext());
+    }
+
+    @Override
+    public void searchDataSuccess(ArrayList<News> searchRes) {
+        rvNewsAdapter.setListNews(searchRes);
+        rvNewsAdapter.notifyDataSetChanged();
     }
 }

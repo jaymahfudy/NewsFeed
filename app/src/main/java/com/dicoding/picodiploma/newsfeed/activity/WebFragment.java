@@ -10,9 +10,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.dicoding.picodiploma.newsfeed.R;
+import com.dicoding.picodiploma.newsfeed.util.ViewUtil;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -26,6 +26,7 @@ public class WebFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewUtil.showBackButton(getContext());
         View view = inflater.inflate(R.layout.fragment_web, container, false);
         String url;
         pbWebView = view.findViewById(R.id.pb_webview);
@@ -36,8 +37,8 @@ public class WebFragment extends Fragment {
             webView.setWebChromeClient(new WebFragment.ChromeClient());
             webView.loadUrl(url);
         } else {
-            setVisibility(View.GONE);
-            showToast(R.string.error_mes);
+            ViewUtil.setVisibility(pbWebView,webView);
+            ViewUtil.showToast(getContext());
         }
         return view;
     }
@@ -46,23 +47,14 @@ public class WebFragment extends Fragment {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             pbWebView.setProgress(newProgress);
-            if (newProgress==100){ setVisibility(View.VISIBLE); }
+            if (newProgress==100){ ViewUtil.setVisibility(pbWebView,webView); }
         }
     }
 
-    public class WebClient extends WebViewClient {
+    class WebClient extends WebViewClient {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-            showToast(R.string.check_ur_connection);
+            ViewUtil.showToast(getContext());
         }
-    }
-
-    private void showToast(int resId){
-        Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
-    }
-
-    private void setVisibility(int wvVisibility){
-        pbWebView.setVisibility(View.GONE);
-        webView.setVisibility(wvVisibility);
     }
 }

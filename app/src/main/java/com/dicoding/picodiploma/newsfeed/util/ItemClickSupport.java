@@ -1,6 +1,8 @@
-package com.dicoding.picodiploma.newsfeed;
+package com.dicoding.picodiploma.newsfeed.util;
 
 import android.view.View;
+
+import com.dicoding.picodiploma.newsfeed.R;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

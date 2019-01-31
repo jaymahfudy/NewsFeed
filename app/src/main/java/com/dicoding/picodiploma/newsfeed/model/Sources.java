@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.newsfeed.object;
+package com.dicoding.picodiploma.newsfeed.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

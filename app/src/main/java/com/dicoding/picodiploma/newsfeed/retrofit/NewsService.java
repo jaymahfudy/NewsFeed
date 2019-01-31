@@ -1,7 +1,7 @@
 package com.dicoding.picodiploma.newsfeed.retrofit;
 
-import com.dicoding.picodiploma.newsfeed.object.ListNews;
-import com.dicoding.picodiploma.newsfeed.object.ListSources;
+import com.dicoding.picodiploma.newsfeed.model.ListNews;
+import com.dicoding.picodiploma.newsfeed.model.ListSources;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

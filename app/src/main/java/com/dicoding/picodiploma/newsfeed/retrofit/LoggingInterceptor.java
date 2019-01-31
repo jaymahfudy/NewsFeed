@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -16,10 +17,11 @@ import okio.Buffer;
  * @author Floriv
  */
 
-public class LoggingInterceptor implements Interceptor {
+class LoggingInterceptor implements Interceptor {
 
+    @NonNull
     @Override
-    public Response intercept(Chain chain) throws IOException {
+    public Response intercept(@NonNull Chain chain) throws IOException {
         Request request = chain.request();
         long t1 = System.nanoTime();
         String requestLog = String.format("Sending request %s on %s%n%s", request.url(), chain.connection(), request.headers());

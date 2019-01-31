@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.newsfeed.object;
+package com.dicoding.picodiploma.newsfeed.model;
 
 import com.google.gson.annotations.SerializedName;
 
